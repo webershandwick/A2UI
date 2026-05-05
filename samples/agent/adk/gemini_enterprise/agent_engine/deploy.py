@@ -47,63 +47,63 @@ def _get_bearer_token():
   return None
 
 
-def _register_agent_on_gemini_enterprise(
-    project_id: str,
-    app_id: str,
-    agent_card: str,
-    agent_name: str,
-    display_name: str,
-    description: str,
-    agent_authorization: str | None = None,
-):
-  """Register an Agent Engine to Gemini Enterprise.
-
-  Args:
-      project_id: Google Cloud project id
-      app_id: Gemini Enterprise application ID
-      agent_card: Agent card definition
-      agent_name: Name of the agent in Gemini Enterprise
-      display_name: Display name for the agent in Gemini Enterprise
-      description: Description of the agent
-      agent_authorization: Agent authorization config
-
-  Returns:
-      dict: Response from Discovery Engine API
-  """
-  api_endpoint = (
-      f"https://discoveryengine.googleapis.com/v1alpha/projects/{project_id}/"
-      f"locations/global/collections/default_collection/engines/{app_id}/"
-      "assistants/default_assistant/agents"
-  )
-
-  payload = {
-      "name": agent_name,
-      "displayName": display_name,
-      "description": description,
-      "a2aAgentDefinition": {"jsonAgentCard": agent_card},
-  }
-
-  if agent_authorization:
-    payload["authorization_config"] = {"agent_authorization": agent_authorization}
-
-  # Get access token
-  bearer_token = _get_bearer_token()
-
-  # Prepare headers
-  headers = {
-      "Authorization": f"Bearer {bearer_token}",
-      "Content-Type": "application/json",
-      "X-Goog-User-Project": project_id,
-  }
-
-  response = requests.post(api_endpoint, headers=headers, json=payload)
-
-  if response.status_code == 200:
-    print("✓ Agent registered successfully!")
-    return response.json()
-  print(f"✗ Registration failed with status code: {response.status_code}")
-  print(f"Response: {response.text}")
-  response.raise_for_status()
+#def _register_agent_on_gemini_enterprise(
+#    project_id: str,
+#    app_id: str,
+#    agent_card: str,
+#    agent_name: str,
+#    display_name: str,
+#    description: str,
+#    agent_authorization: str | None = None,
+#):
+#  """Register an Agent Engine to Gemini Enterprise.
+#
+#  Args:
+#      project_id: Google Cloud project id
+#      app_id: Gemini Enterprise application ID
+#      agent_card: Agent card definition
+#      agent_name: Name of the agent in Gemini Enterprise
+#      display_name: Display name for the agent in Gemini Enterprise
+#      description: Description of the agent
+#      agent_authorization: Agent authorization config
+#
+#  Returns:
+#      dict: Response from Discovery Engine API
+#  """
+#  api_endpoint = (
+#      f"https://discoveryengine.googleapis.com/v1alpha/projects/{project_id}/"
+#      f"locations/global/collections/default_collection/engines/{app_id}/"
+#      "assistants/default_assistant/agents"
+#  )
+#
+#  payload = {
+#      "name": agent_name,
+#      "displayName": display_name,
+#      "description": description,
+#      "a2aAgentDefinition": {"jsonAgentCard": agent_card},
+#  }
+#
+#  if agent_authorization:
+#    payload["authorization_config"] = {"agent_authorization": agent_authorization}
+#
+#  # Get access token
+#  bearer_token = _get_bearer_token()
+#
+#  # Prepare headers
+#  headers = {
+#      "Authorization": f"Bearer {bearer_token}",
+#      "Content-Type": "application/json",
+#      "X-Goog-User-Project": project_id,
+#  }
+#
+#  response = requests.post(api_endpoint, headers=headers, json=payload)
+#
+#  if response.status_code == 200:
+#    print("✓ Agent registered successfully!")
+#    return response.json()
+#  print(f"✗ Registration failed with status code: {response.status_code}")
+#  print(f"Response: {response.text}")
+#  response.raise_for_status()
 
 
 def main():
@@ -244,17 +244,17 @@ def main():
 
   print("✓ A2UI agent card fetched.")
 
-  enterprise_agent = _register_agent_on_gemini_enterprise(
-      project_id=project_id,
-      app_id=app_id,
-      agent_card=a2ui_agent_card_str,
-      agent_name="a2ui_contact_card_agent",
-      display_name="A2UI Contact Card Agent",
-      description="A helpful assistant agent that uses A2UI to render contact cards.",
-      agent_authorization=os.environ.get("AGENT_AUTHORIZATION"),
-  )
-
-  print(enterprise_agent)
+  # enterprise_agent = _register_agent_on_gemini_enterprise(
+  #     project_id=project_id,
+  #     app_id=app_id,
+  #     agent_card=a2ui_agent_card_str,
+  #     agent_name="a2ui_contact_card_agent",
+  #     display_name="A2UI Contact Card Agent",
+  #     description="A helpful assistant agent that uses A2UI to render contact cards.",
+  #     agent_authorization=os.environ.get("AGENT_AUTHORIZATION"),
+  # )
+  #
+  # print(enterprise_agent)
   print("≈" * 120)
 
 
